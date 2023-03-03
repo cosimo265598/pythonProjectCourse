@@ -1,0 +1,77 @@
+   beacon = [[1, 1, 0, 0],
+          [1, 1, 0, 0],
+          [0, 0, 1, 1],
+          [0, 0, 1, 1]]
+    universe = np.zeros((6, 6))
+    universe[1:5, 1:5] = beacon
+    print(universe)
+    out= np.sum(universe[0:3,0:3])
+    print(out)
+    #out= neighbours(beacon,0,0)
+
+
+    padded = np.pad(beacon, pad_width=1, mode='edge')
+    # Define matrices for neighboring pixels
+
+    center = padded[1:-1, 1:-1] # reference pixel
+    top = padded[:-2, 1:-1] 	# previous row, same column
+    bottom = padded[2:, 1:-1] 	# next row, same column
+    left = padded[1:-1, :-2] 	# same row, previous column
+    right = padded[1:-1, 2:] 	# previous row, next column
+
+    print(padded)
+    print(center)
+    print(top)
+    print(bottom)
+    print((center + top + bottom + left + right) / 5)
+
+    nbrs_count = sum(np.roll(np.roll(grid, i, 0), j, 1)  for i in (-1, 0, 1) for j in (-1, 0, 1) if (i != 0 or j != 0))
+    print((nbrs_count == 3) | (grid & (nbrs_count == 2)))
+    print("###############")
+    print(grid)
+    n = (grid[0:-2,0:-2] + grid[0:-2,1:-1] + grid[0:-2,2:] +grid[1:-1,0:-2] + grid[1:-1,2:] + grid[2:,0:-2] +grid[2:,1:-1] + grid[2:,2:])    
+    print(n)
+    state = grid
+    birth = (n == 3) & (state[1:-1,1:-1] == 0)
+    survive = ((n == 2) | (n == 3)) & (state[1:-1,1:-1] == 1)
+    state[...] = 0
+    state[1:-1,1:-1][birth | survive] = 1
+    nBirth = np.sum(birth)
+    
+    nSurvive = np.sum(survive)
+
+
+    beacon = [[1, 1, 0, 0],
+				[1, 1, 0, 0],
+				[0, 0, 1, 1],
+				[0, 0, 1, 1]]
+
+
+    padded = np.pad(beacon, pad_width=1, mode='edge')
+    # Define matrices for neighboring pixels
+    beacon=np.array([[1, 1, 0, 1],
+				[0, 1, 0, 0],
+				[0, 0, 1, 1],
+				[1, 0, 1, 0]])
+	
+    center	= beacon[1:-1, 1:-1] # reference pixel
+    top 	= beacon[:-2, 1:-1] 	# previous row, same column
+    bottom 	= beacon[2:, 1:-1] 	# next row, same column
+    left 	= padded[1:-1, :-2] 	# same row, previous column
+    right 	= padded[1:-1, 2:] 	# previous row, next column
+
+    #print(padded)
+    #print(center)
+    #print(top)
+    #print(bottom)
+    #print((center + top + bottom + left + right) / 5)
+    #a= (beacon[0:-2,0:-2] + beacon[0:-2,1:-1] + beacon[0:-2,2:] + beacon[1:-1,0:-2] + beacon[1:-1,2:] + beacon[2:,0:-2] + beacon[2:,1:-1] + beacon[2:,2:])
+
+    #a=(beacon[1:-1, 1:-1] +beacon[:-2, 1:-1] + beacon[2:, 1:-1]+ beacon[1:-1, :-2]+ beacon[1:-1, 2:])
+    #print(beacon[1:-1, 1:-1])
+
+    print(beacon)
+    print(beacon[:3, :3])
+    padded = np.pad(beacon[0:-2,0:-2], pad_width=1, mode='constant', constant_values=0)
+    print(padded[0:-2,0:-2])
+    print(np.sum(padded[0:-2,0:-2]))
